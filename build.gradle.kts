@@ -25,12 +25,13 @@ configure<FlareExtension> {
     sdkVersion = "1.0.0-SNAPSHOT"
     platforms = mapOf(
         FlarePlatformType.SPIGOT to "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT",
-        FlarePlatformType.VELOCITY to "com.velocitypowered:velocity-api:3.4.0-SNAPSHOT",
+        FlarePlatformType.VELOCITY to "com.velocitypowered:velocity-api:4.0.0-SNAPSHOT",
         FlarePlatformType.BUNGEECORD to "net.md-5:bungeecord-api:1.21-R0.1-SNAPSHOT"
     )
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -42,5 +43,5 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(17)
 }
