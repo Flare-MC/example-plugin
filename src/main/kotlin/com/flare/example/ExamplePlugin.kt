@@ -8,7 +8,7 @@ package com.flare.example
 class ExamplePlugin {
 
     fun onEnable() {
-
+        println("Hello, it works!")
     }
 
 }
