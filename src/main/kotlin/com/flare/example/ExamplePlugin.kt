@@ -4,6 +4,8 @@ import com.flare.sdk.FlareConfiguration
 import com.flare.sdk.annotations.DataFolder
 import com.flare.sdk.annotations.PlatformAccessor
 import com.flare.sdk.annotations.PluginConfiguration
+import com.flare.sdk.event.EventBus
+import com.flare.sdk.event.impl.player.PlayerJoinEvent
 import com.flare.sdk.platform.Platform
 import java.io.File
 
@@ -29,6 +31,10 @@ class ExamplePlugin {
 
     fun onEnable() {
         println("Hello, it works! (Running on ${platform.platformType.name} - ${dataFolder.absolutePath})")
+
+        EventBus.register(PlayerJoinEvent::class.java) {
+            println("${it.player.name} just joined the game!")
+        }
     }
 
     fun onDisable() {
