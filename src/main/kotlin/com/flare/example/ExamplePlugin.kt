@@ -2,13 +2,11 @@ package com.flare.example
 
 import com.flare.example.command.ExampleCommand
 import com.flare.sdk.FlareConfiguration
-import com.flare.sdk.annotations.CommandManagerAccessor
-import com.flare.sdk.annotations.DataFolderAccessor
-import com.flare.sdk.annotations.PlatformAccessor
-import com.flare.sdk.annotations.PluginConfigurationAccessor
+import com.flare.sdk.annotations.*
 import com.flare.sdk.command.AbstractCommandManager
 import com.flare.sdk.event.EventBus
 import com.flare.sdk.event.impl.player.PlayerJoinEvent
+import com.flare.sdk.file.AbstractFileManager
 import com.flare.sdk.platform.Platform
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -33,6 +31,9 @@ class ExamplePlugin {
     @CommandManagerAccessor
     private lateinit var commandManager: AbstractCommandManager<*, *>
 
+    @FileManagerAccessor
+    private lateinit var fileManager: AbstractFileManager
+
     fun onLoad() {
         commandManager.consoleSender.sendMessage(Component.text("Loading ${configuration.name} plugin...").color(NamedTextColor.GOLD))
     }
@@ -42,6 +43,12 @@ class ExamplePlugin {
             .append(Component.text("(Running on ${platform.platformType.name} - ${dataFolder.absolutePath})").color(NamedTextColor.YELLOW)))
 
         commandManager.registerCommand(ExampleCommand())
+
+        val config = fileManager.register("config")
+        if (!config.contains("works")) {
+            config.set("works", true)
+            config.save()
+        }
 
         EventBus.register(PlayerJoinEvent::class.java) {
             commandManager.consoleSender.sendMessage(Component.text("${it.player.name} just joined the game!").color(NamedTextColor.YELLOW))
