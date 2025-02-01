@@ -8,6 +8,7 @@ import com.flare.sdk.event.EventBus
 import com.flare.sdk.event.impl.player.PlayerJoinEvent
 import com.flare.sdk.file.AbstractFileManager
 import com.flare.sdk.platform.Platform
+import com.flare.sdk.task.AbstractTaskManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import java.io.File
@@ -34,6 +35,9 @@ class ExamplePlugin {
     @FileManagerAccessor
     private lateinit var fileManager: AbstractFileManager
 
+    @TaskManagerAccessor
+    private lateinit var taskManager: AbstractTaskManager
+
     fun onLoad() {
         commandManager.consoleSender.sendMessage(Component.text("Loading ${configuration.name} plugin...").color(NamedTextColor.GOLD))
     }
@@ -53,6 +57,10 @@ class ExamplePlugin {
         EventBus.register(PlayerJoinEvent::class.java) {
             commandManager.consoleSender.sendMessage(Component.text("${it.player.name} just joined the game!").color(NamedTextColor.YELLOW))
         }
+
+        taskManager.schedule({
+            commandManager.consoleSender.sendMessage(Component.text("This is a scheduled task that sends this message every 5 seconds.").color(NamedTextColor.YELLOW))
+        }, 5, 5)
     }
 
     fun onDisable() {
